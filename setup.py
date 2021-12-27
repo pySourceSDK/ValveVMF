@@ -1,0 +1,27 @@
+from distutils.core import setup
+setup(
+    name='valvevmf',
+    packages=['valvevmf'],
+    version='0.1.0',
+    license='gpl-3.0',
+    description='A library to parse .vmf files used in the source engine.',
+    author='Maxime Dupuis',
+    author_email='mdupuis@hotmail.ca',
+    url='https://github.com/pySourceSDK/ValveVMF',
+    download_url='https://github.com/pySourceSDK/ValveVMF/archive/v1.0.0.tar.gz',
+    keywords=['vmf', 'source', 'sourcesdk', 'hammer', 'valve'],
+    install_requires=['pyparsing', 'future'],
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Build Tools',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+    ],
+)
