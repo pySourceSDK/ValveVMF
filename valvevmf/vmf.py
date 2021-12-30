@@ -14,8 +14,6 @@ from valvevmf.writer import VmfWrite
 class Vmf(object):
     """
     This is the basic class to interact with vmf files.
-    To interact with the data, consult :py:class:`VmfRoot<VmfRoot>`
-    which this class inherits
     """
 
     def __init__(self, path=None):
@@ -27,8 +25,6 @@ class Vmf(object):
         """
         self.source_path = path  #: :type: (str) - The location of the parsed file
         self.nodes = []
-
-        super().__init__()
 
         if self.source_path:
             self.nodes = VmfParse(self.source_path)

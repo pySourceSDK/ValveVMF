@@ -22,5 +22,13 @@ class VmfWriteTestCase(unittest.TestCase):
             text_result = file.read()
         self.assertEqual(text_result, self.vmf.vmf_str())
 
+    def testWriteExact(self):
+        self.vmf.save(self.vmf_file)
+        with open(self.vmf_file, 'r') as file:
+            original_text = str(file.read())
+        original_text = "\n".join(original_text.splitlines())
+        test_text = "\n".join(self.vmf.vmf_str().splitlines())
+        self.assertEqual(test_text, original_text)
+
     def testRepr(self):
-        self.assertTrue(isinstance(repr(self.vmf), six.string_types))
+        self.assertTrue(isinstance(repr(self.vmf.nodes[0]), six.string_types))
