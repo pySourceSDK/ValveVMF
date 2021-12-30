@@ -13,17 +13,21 @@ from valvevmf.writer import VmfWrite
 
 class Vmf(object):
     """
-    This is the basic class to interact with vmf files.
+    This is the basic class to interact with vmf files, it is mostly a collection of VmfNodes.
     """
 
     def __init__(self, path=None):
         """
         initalize a Vmf file.
 
-        :param path: The location of the vmf file to be parsed
-        :type path: str
+        :param path: The location of the vmf file to be parsed, saved as :any:`source_path<Vmf.source_path>`.
+        :type path: str, optional
         """
-        self.source_path = path  #: :type: (str) - The location of the parsed file
+
+        #: :type: (str) - The location of the parsed file
+        self.source_path = path
+
+        #: :type: (list[VmfNode]) - The list of nodes at the Vmf root
         self.nodes = []
 
         if self.source_path:
