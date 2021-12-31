@@ -54,5 +54,5 @@ class VmfNode(object):
             vstr += write_property(p, self.name, indent+1)
         for n in self.nodes:
             vstr += n.vmf_str(indent+1)
-        vstr += '     ' * indent + '}\n'
+        vstr += '    ' * indent + '}\n'
         return vstr
