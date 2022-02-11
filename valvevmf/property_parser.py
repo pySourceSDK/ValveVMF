@@ -18,7 +18,7 @@ def asTuple(data):
 pp_bool = Word(nums+'-').setParseAction(lambda p: bool(int(p[0])))
 pp_int = Word(nums+'-').setParseAction(lambda p: int(p[0]))
 pp_uint8 = Word(nums).setParseAction(lambda p: min(255, max(0, int(p[0]))))
-pp_float = Word(nums+'-.').setParseAction(lambda p: Decimal(p[0]))
+pp_float = Word(nums+'-.e').setParseAction(lambda p: Decimal(p[0]))
 
 pp_angle = Group(pp_float + pp_float + pp_float).setParseAction(asTuple)
 pp_origin = pp_angle
