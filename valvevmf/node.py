@@ -42,7 +42,7 @@ class VmfNode(object):
         :rtype: str
         """
 
-        return '<VmfNode %(name)s %(p_len)x %(n_len)x' % \
+        return '<VmfNode %(name)s %(p_len)x %(n_len)x>' % \
             {'name': self.name,
              'p_len': len(self.properties),
              'n_len': len(self.nodes)}
