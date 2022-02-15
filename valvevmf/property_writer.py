@@ -13,13 +13,12 @@ def _repr_prop_value(val, wrapper=None):
     vstr = val
     if isinstance(val, str):
         vstr = val
-    elif isinstance(val, Decimal) or\
-        isinstance(val, float):
+    elif isinstance(val, Decimal) or isinstance(val, float):
         vstr = '{:.6g}'.format(val)
-    elif isinstance(val, int):
-        vstr = str(val)
     elif isinstance(val, bool):
         vstr = '1' if val else '0'
+    elif isinstance(val, int):
+        vstr = str(val)
     elif isinstance(val, list) or isinstance(val, tuple):
         vstr = ' '.join([_repr_prop_value(c) for c in val])
 
