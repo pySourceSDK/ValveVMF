@@ -10,8 +10,10 @@ standard_library.install_aliases()
 from valvevmf.parser import VmfParse
 from valvevmf.writer import VmfWrite
 
+from valvevmf.node import HoldsNodesAbstract
 
-class Vmf(object):
+
+class Vmf(HoldsNodesAbstract):
     """
     This is the basic class to interact with vmf files, it is mostly a collection of VmfNodes.
     """
@@ -27,8 +29,7 @@ class Vmf(object):
         #: :type: (str) - The location of the parsed file
         self.source_path = path
 
-        #: :type: (list[VmfNode]) - The list of nodes at the Vmf root
-        self.nodes = []
+        super(HoldsNodesAbstract, self).__init__(None)
 
         if self.source_path:
             self.nodes = VmfParse(self.source_path)
