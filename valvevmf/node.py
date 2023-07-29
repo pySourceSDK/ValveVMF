@@ -2,22 +2,25 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
+
+from builtins import range
+from builtins import super
+import collections
+from builtins import object
 from builtins import str
 from future import standard_library
 standard_library.install_aliases()
-from builtins import object
 
-import collections
+from valvevmf.property_writer import write_property  # NOQA: #402
 
 try:
     collectionsAbc = collections.abc
 except AttributeError:
     collectionsAbc = collections
 
-from valvevmf.property_writer import write_property
 
-
-class HoldsPropertiesAbstract(collectionsAbc.MutableMapping, ):
+class HoldsPropertiesAbstract(collectionsAbc.MutableMapping):
+    # def __init_props__(self, properties=None):
     def __init__(self, properties=None):
         """
         :param properties: The node's properties.
@@ -43,12 +46,12 @@ class HoldsPropertiesAbstract(collectionsAbc.MutableMapping, ):
 
     def __setitem__(self, attr, value):
         set_at = -1
-        
+
         for i in range(len(self.properties)):
             if self.properties[i][0] == attr:
                 set_at = i
                 break
-        
+
         if set_at >= 0:
             self.properties[i] = (attr, value)
         else:
@@ -56,6 +59,7 @@ class HoldsPropertiesAbstract(collectionsAbc.MutableMapping, ):
 
 
 class HoldsNodesAbstract(collectionsAbc.MutableMapping):
+    # def __init_nodes__(self, nodes=None):
     def __init__(self, nodes=None):
         """
         :param nodes: The node's sub-nodes
@@ -64,7 +68,7 @@ class HoldsNodesAbstract(collectionsAbc.MutableMapping):
 
         if nodes is None:
             nodes = []
-        
+
         #: :type: (list[VmfNode], optional)
         self.nodes = nodes
 
@@ -83,6 +87,7 @@ class HoldsNodesAbstract(collectionsAbc.MutableMapping):
     def __setitem__(self, index, value):
         self.nodes[index] = value
 
+
 class VmfNode(HoldsPropertiesAbstract, HoldsNodesAbstract):
     def __init__(self, name, properties=None, nodes=None):
         """Creates an empty instance of VmfNode.
@@ -94,8 +99,8 @@ class VmfNode(HoldsPropertiesAbstract, HoldsNodesAbstract):
         #: :type: (str) - The nodes's name ("world", "solid", "entity"...)
         self.name = name
 
-        super(HoldsPropertiesAbstract, self).__init__(properties)
-        super(HoldsNodesAbstract, self).__init__(nodes)
+        HoldsNodesAbstract.__init__(self, nodes)
+        HoldsPropertiesAbstract.__init__(self, properties)
 
     def __delitem__(self, index):
         """Deletes the first instance of a property by name
@@ -104,9 +109,9 @@ class VmfNode(HoldsPropertiesAbstract, HoldsNodesAbstract):
         :type attr: int, str
         """
         if isinstance(index, int):
-            super(HoldsNodesAbstract, self).__delitem__(index)
+            HoldsNodesAbstract.__delitem__(self, index)
         elif isinstance(index, str):
-            super(HoldsPropertiesAbstract, self).__delitem__(index)
+            HoldsPropertiesAbstract.__delitem__(self, index)
         else:
             raise LookupError
 
@@ -117,35 +122,35 @@ class VmfNode(HoldsPropertiesAbstract, HoldsNodesAbstract):
         :type attr: str, int
         """
         if isinstance(index, int):
-            super(HoldsNodesAbstract, self).__getitem__(index)
+            HoldsNodesAbstract.__getitem__(self, index)
         elif isinstance(index, str):
-            super(HoldsPropertiesAbstract, self).__getitem__(index)
+            HoldsPropertiesAbstract.__getitem__(self, index)
         else:
             raise LookupError
 
     def __setitem__(self, index, value):
         """Sets the first instance of a property by name
-        
+
         :param attr: The parameter name to set.
         :type attr: str
         :param value: The parameter value to use.
         :type attr: str
         """
         if isinstance(index, int):
-            super(HoldsNodesAbstract, self).__setitem__(index, value)
+            HoldsNodesAbstract.__setitem__(self, index)
         elif isinstance(index, str):
-            super(HoldsPropertiesAbstract, self).__setitem__(index, value)
+            HoldsPropertiesAbstract.__setitem__(self, index)
         else:
             raise LookupError
 
-    def __repr__(self, attr):
+    def __repr__(self):
         """A partial, printable summary of a VmfNode.
 
         :returns: A Python formated string.
         :rtype: str
         """
 
-        return '<VmfNode %(name)s %(p_len)x %(n_len)x>' % \
+        return '<VmfNode %(name)s %(p_len)x properties %(n_len)x subnodes>' % \
             {'name': self.name,
              'p_len': len(self.properties),
              'n_len': len(self.nodes)}

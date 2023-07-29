@@ -2,15 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+from valvevmf.node import HoldsNodesAbstract
+from valvevmf.writer import VmfWrite
+from valvevmf.parser import VmfParse
 from builtins import object
 from builtins import super
 from future import standard_library
 standard_library.install_aliases()
-
-from valvevmf.parser import VmfParse
-from valvevmf.writer import VmfWrite
-
-from valvevmf.node import HoldsNodesAbstract
 
 
 class Vmf(HoldsNodesAbstract):
@@ -29,7 +27,7 @@ class Vmf(HoldsNodesAbstract):
         #: :type: (str) - The location of the parsed file
         self.source_path = path
 
-        super(HoldsNodesAbstract, self).__init__(None)
+        HoldsNodesAbstract.__init__(self, None)
 
         if self.source_path:
             self.nodes = VmfParse(self.source_path)

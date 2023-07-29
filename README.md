@@ -1,11 +1,13 @@
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/pySourceSDK/ValveVMF/blob/master/LICENSE.txt)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/valvevmf.svg)](https://pypi.python.org/pypi/valvevmf/)
+[![Platforms](https://img.shields.io/badge/platform-Linux,_MacOS,_Windows-blue)]()
 [![PyPI version fury.io](https://badge.fury.io/py/valvevmf.svg)](https://pypi.python.org/pypi/valvevmf/)
-[![alt text](https://github.com/pySourceSDK/ValveVMF/blob/master/docs/source/coverage.svg "coverage")]()
+[![GitHub Workflow Status (with event)](https://github.com/pySourceSDK/ValveVMF/actions/workflows/tests.yml/badge.svg)]()
+[![Test coverage](https://github.com/pySourceSDK/ValveVMF/blob/master/docs/source/coverage.svg "coverage")]()
 
 # ValveVMF
 
-ValveVMF is a Python library for parsing .vmf files for the Source Engine. It provides ways to read, modify and write vmf files.
+ValveVMF is a python library for parsing and editing .VMF asset files associated with Valve's Source engine. It provides provides access to lump data in map files.
 
 Full documentation: https://pysourcesdk.github.io/ValveVMF/
 
@@ -37,7 +39,7 @@ python3 setup.py install
 
 ## Usage
 
-Here's a few example usage of valveVmf
+Here's a few example usage of ValveVMF
 
 ### Parsing
 
