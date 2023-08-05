@@ -2,12 +2,12 @@
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/valvevmf.svg)](https://pypi.python.org/pypi/valvevmf/)
 [![Platforms](https://img.shields.io/badge/platform-Linux,_MacOS,_Windows-blue)]()
 [![PyPI version fury.io](https://badge.fury.io/py/valvevmf.svg)](https://pypi.python.org/pypi/valvevmf/)
-[![GitHub Workflow Status (with event)](https://github.com/pySourceSDK/ValveVMF/actions/workflows/tests.yml/badge.svg)]()
+[![GitHub Workflow Status (with event)](https://github.com/pySourceSDK/ValveVMF/actions/workflows/CI.yml/badge.svg)]()
 [![Test coverage](https://github.com/pySourceSDK/ValveVMF/blob/master/docs/source/coverage.svg "coverage")]()
 
 # ValveVMF
 
-ValveVMF is a python library for parsing and editing .VMF asset files associated with Valve's Source engine. It provides provides access to lump data in map files.
+ValveVMF is a Python library designed to parse and edit .VMF files, which store game level data for Valve's level editor, Hammer.
 
 Full documentation: https://pysourcesdk.github.io/ValveVMF/
 

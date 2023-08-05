@@ -18,7 +18,7 @@ Welcome to ValveVMF's documentation!
    :target: https://pypi.python.org/pypi/valvevmf/
 
 .. CI status
-.. image:: https://github.com/pySourceSDK/ValveVMF/actions/workflows/tests.yml/badge.svg
+.. image:: https://github.com/pySourceSDK/ValveVMF/actions/workflows/CI.yml/badge.svg
    :target: https://github.com/pySourceSDK/ValveVMF/actions
 
 .. Coverage
