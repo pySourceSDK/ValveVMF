@@ -1,18 +1,7 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import unicode_literals
-
-from builtins import range
-from builtins import object
-from builtins import str
-from future import standard_library
-standard_library.install_aliases()
-
-from valvevmf.property_writer import write_property  # NOQA: #402
+from valvevmf.property_writer import write_property
 
 
-class HoldsPropertiesAbstract(object):
+class HoldsPropertiesAbstract:
     # def __init_props__(self, properties=None):
     def __init__(self, properties=None):
         """
@@ -61,7 +50,7 @@ class HoldsPropertiesAbstract(object):
         return [p[1] for p in self.properties if p[0] == attr]
 
 
-class HoldsNodesAbstract(object):
+class HoldsNodesAbstract:
     # def __init_nodes__(self, nodes=None):
     def __init__(self, nodes=None):
         """

@@ -1,4 +1,3 @@
-import six
 import os
 import tempfile
 import unittest
@@ -31,4 +30,4 @@ class VmfWriteTestCase(unittest.TestCase):
         self.assertEqual(test_text, original_text)
 
     def testRepr(self):
-        self.assertTrue(isinstance(repr(self.vmf.nodes[0]), six.string_types))
+        self.assertTrue(isinstance(repr(self.vmf.nodes[0]), str))

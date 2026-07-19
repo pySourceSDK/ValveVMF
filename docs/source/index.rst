@@ -3,7 +3,7 @@ Welcome to ValveVMF's documentation!
 
 .. license
 .. image:: https://img.shields.io/badge/License-GPLv3-blue.svg
-   :target: https://github.com/pySourceSDK/ValveVMF/blob/master/LICENSE.txt
+   :target: https://github.com/pySourceSDK/ValveVMF/blob/main/LICENSE.txt
 
 .. Python versions
 .. image:: https://img.shields.io/pypi/pyversions/valvevmf.svg

@@ -1,23 +1,15 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-from builtins import int
-from future import standard_library
-standard_library.install_aliases()
-
-from pyparsing import *  # NOQA: E402
-from decimal import Decimal  # NOQA: E402
+from pyparsing import *
+from decimal import Decimal
 
 
 def asTuple(data):
-    return [tuple(data.asList()[0])]
+    return [tuple(data.as_list()[0])]
 
 
 # Property parsing
-pp_bool = Word(nums+'-').setParseAction(lambda p: bool(int(p[0])))
-pp_int = Word(nums+'-').setParseAction(lambda p: int(p[0]))
-pp_uint8 = Word(nums).setParseAction(lambda p: min(255, max(0, int(p[0]))))
+pp_bool = Word(nums+'-').set_parse_action(lambda p: bool(int(p[0])))
+pp_int = Word(nums+'-').set_parse_action(lambda p: int(p[0]))
+pp_uint8 = Word(nums).set_parse_action(lambda p: min(255, max(0, int(p[0]))))
 # A full float literal, including scientific notation in every spelling
 # Hammer and the engine emit: lowercase/uppercase E, optional '+' exponent
 # sign, and zero-padded exponents (e.g. '1E-8', '9.53674e-07', '-1.52e-005').
@@ -25,26 +17,26 @@ pp_uint8 = Word(nums).setParseAction(lambda p: min(255, max(0, int(p[0]))))
 # tiny residues left by rotating brushes, so 'Word(nums+"-.e")' silently
 # truncated 'E' forms and crashed on 'e+' forms.
 pp_float = Regex(r'[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?') \
-    .setParseAction(lambda p: Decimal(p[0]))
+    .set_parse_action(lambda p: Decimal(p[0]))
 
-pp_angle = Group(pp_float + pp_float + pp_float).setParseAction(asTuple)
+pp_angle = Group(pp_float + pp_float + pp_float).set_parse_action(asTuple)
 pp_origin = pp_angle
 
 pp_vertex_content = Group(pp_float + pp_float +
-                          pp_float).setParseAction(asTuple)
+                          pp_float).set_parse_action(asTuple)
 pp_vertex_tup = Suppress('(') + pp_vertex_content + Suppress(')')
 pp_vertex_arr = Suppress('[') + pp_vertex_content + Suppress(']')
 
 pp_plane = Group(pp_vertex_tup + pp_vertex_tup +
-                 pp_vertex_tup).setParseAction(asTuple)
-pp_color255 = Group(pp_uint8 + pp_uint8 + pp_uint8).setParseAction(asTuple)
+                 pp_vertex_tup).set_parse_action(asTuple)
+pp_color255 = Group(pp_uint8 + pp_uint8 + pp_uint8).set_parse_action(asTuple)
 
 pp_uvaxis = Group(Suppress('[') + pp_float + pp_float + pp_float + pp_float +
-                  Suppress(']') + pp_float).setParseAction(asTuple)
+                  Suppress(']') + pp_float).set_parse_action(asTuple)
 pp_2dvector = Group(Suppress('[') + pp_float + pp_float +
-                    Suppress(']')).setParseAction(asTuple)
+                    Suppress(']')).set_parse_action(asTuple)
 
-pp_allowed_verts = Group(ZeroOrMore(pp_int)).setParseAction(asTuple)
+pp_allowed_verts = Group(ZeroOrMore(pp_int)).set_parse_action(asTuple)
 
 param_type_map = {
     'id': pp_int,

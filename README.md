@@ -1,9 +1,9 @@
-[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/pySourceSDK/ValveVMF/blob/master/LICENSE.txt)
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/pySourceSDK/ValveVMF/blob/main/LICENSE.txt)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/valvevmf.svg)](https://pypi.python.org/pypi/valvevmf/)
 [![Platforms](https://img.shields.io/badge/platform-Linux,_MacOS,_Windows-blue)]()
 [![PyPI version fury.io](https://badge.fury.io/py/valvevmf.svg)](https://pypi.python.org/pypi/valvevmf/)
 [![GitHub Workflow Status (with event)](https://github.com/pySourceSDK/ValveVMF/actions/workflows/CI.yml/badge.svg)]()
-[![Test coverage](https://github.com/pySourceSDK/ValveVMF/blob/master/docs/source/coverage.svg "coverage")]()
+[![Test coverage](https://github.com/pySourceSDK/ValveVMF/blob/main/docs/source/coverage.svg "coverage")]()
 
 # ValveVMF
 
@@ -34,7 +34,7 @@ git clone git@github.com:pySourceSDK/ValveVMF.git
 and install it with:
 
 ```bash
-python3 setup.py install
+pip3 install .
 ```
 
 ## Usage
