@@ -13,8 +13,18 @@ def _repr_prop_value(val, wrapper=None):
     vstr = val
     if isinstance(val, str):
         vstr = val
-    elif isinstance(val, Decimal) or isinstance(val, float):
-        vstr = '{:.6g}'.format(val)
+    elif isinstance(val, Decimal):
+        # Format with the full stored precision and never in scientific
+        # notation: Hammer and VBSP read plain decimal literals only, and
+        # this library's own parser mis-reads 'E'/'e+' forms. A lossy or
+        # scientific format silently shifts geometry the caller never
+        # touched, since saving re-serializes the whole file.
+        vstr = format(val, 'f')
+    elif isinstance(val, float):
+        # Route through Decimal so we get the same fixed-point, never
+        # scientific, output. repr(1e+20) would emit '1e+20', which the
+        # parser cannot read back.
+        vstr = format(Decimal(repr(val)), 'f')
     elif isinstance(val, bool):
         vstr = '1' if val else '0'
     elif isinstance(val, int):
@@ -34,8 +44,19 @@ def _property_str(key, val, indent):
 def write_property(prop, node_name=None, indent=0):
 
     key, pvalue = prop
+    # Keys the parser reads as bracketed vectors (pp_vertex_arr / pp_2dvector
+    # in param_type_map) are stored as plain tuples, so the writer must put
+    # the '[]' back or the value re-parses as bare numbers. 'look' is global
+    # (it shows up in Hammer's 'camera' nodes) and 'position' on entities are
+    # both pp_vertex_arr; missing them corrupted every map carrying a saved
+    # editor camera. The isinstance guard leaves an unparsed value -- e.g.
+    # 'position' on a 'camera' node, which the parser keeps as a raw string
+    # already containing its brackets -- untouched, so it is not double-wrapped.
     if (node_name == 'editor' and key == 'logicalpos') or \
-       (node_name == 'dispinfo' and key == 'startposition'):
+       (node_name == 'dispinfo' and key == 'startposition') or \
+       (key == 'look' and isinstance(pvalue, (tuple, list))) or \
+       (node_name == 'entity' and key == 'position'
+            and isinstance(pvalue, (tuple, list))):
         pvalue = _repr_prop_value(pvalue, '[]')
     elif node_name == 'cordon' and key in ['mins', 'maxs']:
         pvalue = _repr_prop_value(pvalue, '()')

@@ -18,7 +18,14 @@ def asTuple(data):
 pp_bool = Word(nums+'-').setParseAction(lambda p: bool(int(p[0])))
 pp_int = Word(nums+'-').setParseAction(lambda p: int(p[0]))
 pp_uint8 = Word(nums).setParseAction(lambda p: min(255, max(0, int(p[0]))))
-pp_float = Word(nums+'-.e').setParseAction(lambda p: Decimal(p[0]))
+# A full float literal, including scientific notation in every spelling
+# Hammer and the engine emit: lowercase/uppercase E, optional '+' exponent
+# sign, and zero-padded exponents (e.g. '1E-8', '9.53674e-07', '-1.52e-005').
+# Real maps carry these in parsed fields (uaxis/vaxis/plane/origin) as the
+# tiny residues left by rotating brushes, so 'Word(nums+"-.e")' silently
+# truncated 'E' forms and crashed on 'e+' forms.
+pp_float = Regex(r'[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?') \
+    .setParseAction(lambda p: Decimal(p[0]))
 
 pp_angle = Group(pp_float + pp_float + pp_float).setParseAction(asTuple)
 pp_origin = pp_angle

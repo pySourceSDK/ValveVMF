@@ -4,8 +4,6 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from builtins import range
-from builtins import super
-import collections
 from builtins import object
 from builtins import str
 from future import standard_library
@@ -13,13 +11,8 @@ standard_library.install_aliases()
 
 from valvevmf.property_writer import write_property  # NOQA: #402
 
-try:
-    collectionsAbc = collections.abc
-except AttributeError:
-    collectionsAbc = collections
 
-
-class HoldsPropertiesAbstract(collectionsAbc.MutableMapping):
+class HoldsPropertiesAbstract(object):
     # def __init_props__(self, properties=None):
     def __init__(self, properties=None):
         """
@@ -36,29 +29,39 @@ class HoldsPropertiesAbstract(collectionsAbc.MutableMapping):
     def __delitem__(self, attr):
         for i in range(len(self.properties)):
             if self.properties[i][0] == attr:
-                return self.properties[i][0]
+                del self.properties[i]
+                return
 
     def __getitem__(self, attr):
         for i in range(len(self.properties)):
             if self.properties[i][0] == attr:
-                return self.properties[i][0]
+                return self.properties[i][1]
         return None
 
     def __setitem__(self, attr, value):
-        set_at = -1
-
         for i in range(len(self.properties)):
             if self.properties[i][0] == attr:
-                set_at = i
-                break
+                self.properties[i] = (attr, value)
+                return
 
-        if set_at >= 0:
-            self.properties[i] = (attr, value)
-        else:
-            self.properties.append((attr, value))
+        self.properties.append((attr, value))
+
+    def get_all(self, attr):
+        """Every value stored under a property name.
+
+        Property names are not unique: 'connections' repeats output names
+        and 'allowed_verts' repeats keys, so indexing returns only the
+        first. This returns all of them, in file order.
+
+        :param attr: The property name to look up.
+        :type attr: str
+        :rtype: list
+        """
+
+        return [p[1] for p in self.properties if p[0] == attr]
 
 
-class HoldsNodesAbstract(collectionsAbc.MutableMapping):
+class HoldsNodesAbstract(object):
     # def __init_nodes__(self, nodes=None):
     def __init__(self, nodes=None):
         """
@@ -73,19 +76,29 @@ class HoldsNodesAbstract(collectionsAbc.MutableMapping):
         self.nodes = nodes
 
     def __iter__(self):
-        return self.item(self.nodes)
+        return iter(self.nodes)
 
-    def __len__(self, index):
+    def __len__(self):
         return len(self.nodes)
 
     def __delitem__(self, index):
         self.nodes.pop(index)
 
     def __getitem__(self, index):
-        self.nodes[index]
+        return self.nodes[index]
 
     def __setitem__(self, index, value):
         self.nodes[index] = value
+
+    def children(self, name):
+        """Every direct sub-node with a given name.
+
+        :param name: The node name to match ('solid', 'side', 'entity'...).
+        :type name: str
+        :rtype: list[VmfNode]
+        """
+
+        return [n for n in self.nodes if n.name == name]
 
 
 class VmfNode(HoldsPropertiesAbstract, HoldsNodesAbstract):
@@ -122,9 +135,9 @@ class VmfNode(HoldsPropertiesAbstract, HoldsNodesAbstract):
         :type attr: str, int
         """
         if isinstance(index, int):
-            HoldsNodesAbstract.__getitem__(self, index)
+            return HoldsNodesAbstract.__getitem__(self, index)
         elif isinstance(index, str):
-            HoldsPropertiesAbstract.__getitem__(self, index)
+            return HoldsPropertiesAbstract.__getitem__(self, index)
         else:
             raise LookupError
 
@@ -137,9 +150,9 @@ class VmfNode(HoldsPropertiesAbstract, HoldsNodesAbstract):
         :type attr: str
         """
         if isinstance(index, int):
-            HoldsNodesAbstract.__setitem__(self, index)
+            HoldsNodesAbstract.__setitem__(self, index, value)
         elif isinstance(index, str):
-            HoldsPropertiesAbstract.__setitem__(self, index)
+            HoldsPropertiesAbstract.__setitem__(self, index, value)
         else:
             raise LookupError
 

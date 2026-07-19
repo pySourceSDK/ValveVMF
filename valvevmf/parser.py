@@ -36,7 +36,7 @@ def asGrid(data):
 
 # Node parsing
 pp_vnode = Forward()
-pp_node_name = Word(alphas+'_')
+pp_node_name = Word(alphas+'_', alphanums+'_')
 pp_node_keyval = Group(QuotedString('"') + QuotedString('"'))
 pp_node_keyval.setParseAction(asTuple)
 
