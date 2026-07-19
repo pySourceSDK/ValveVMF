@@ -76,7 +76,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install build
-        python -m pip install tox
 
     - name: Extract tag name
       id: tag
@@ -94,6 +93,32 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.PYPI_API_TOKEN }}
+        # Re-running a release must not hard-fail on an already-uploaded
+        # version. PyPI answers a duplicate upload with a 400, which used to
+        # abort the job.
+        skip-existing: true
+
+  docs:
+    name: Build and deploy documentation
+    runs-on: ubuntu-latest
+    # Deliberately not tied to build-n-publish: docs must still deploy when a
+    # PyPI upload is skipped or fails, and doc fixes should go live without
+    # waiting for a release.
+    if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox
 
     - name: Sphinx Doc build
       run: tox -e docs
